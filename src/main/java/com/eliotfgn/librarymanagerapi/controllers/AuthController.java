@@ -1,5 +1,7 @@
 package com.eliotfgn.librarymanagerapi.controllers;
 
+import com.eliotfgn.librarymanagerapi.dto.AuthenticationResponse;
+import com.eliotfgn.librarymanagerapi.dto.LoginRequest;
 import com.eliotfgn.librarymanagerapi.dto.RegisterRequest;
 import com.eliotfgn.librarymanagerapi.models.User;
 import com.eliotfgn.librarymanagerapi.services.AuthService;
@@ -21,5 +23,10 @@ public class AuthController {
     public ResponseEntity<User> signup(@RequestBody RegisterRequest registerRequest) {
         User user = authService.signup(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok().body(authService.login(loginRequest));
     }
 }
