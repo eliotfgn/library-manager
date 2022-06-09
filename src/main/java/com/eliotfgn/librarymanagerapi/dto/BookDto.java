@@ -1,18 +1,23 @@
 package com.eliotfgn.librarymanagerapi.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class BookDto implements Serializable {
-    private final Long id;
-    private final String title;
-    private final String author;
-    private final String collection;
-    private final int year;
-    private final int nbStock;
-    private final int nbFree;
-    private final List<TagDto> tags;
+    private String title;
+    private String author;
+    private String collection;
+    private int year;
+    private int nbStock;
+    private int nbFree;
+    private List<String> tags;
 }

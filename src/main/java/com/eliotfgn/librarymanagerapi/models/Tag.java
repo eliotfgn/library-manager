@@ -18,4 +18,8 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String label;
+
+    public Tag(String tag) {
+        label = tag;
+    }
 }

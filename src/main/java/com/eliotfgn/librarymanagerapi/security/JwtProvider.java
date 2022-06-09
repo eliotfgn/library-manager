@@ -25,16 +25,18 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(Date.from(Instant.now().plusMillis(15*60*1000)))
+                .setExpiration(Date.from(Instant.now().plusMillis(15*60*60*1000)))
                 .signWith(key)
                 .compact();
     }
 
     public String generateToken(Authentication authentication) {
+        User principal = (User) authentication.getPrincipal();
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(((User) authentication.getPrincipal()).getUsername())
+                .setSubject(principal.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(Date.from(Instant.now().plusMillis(15*60*60*1000)))
                 .signWith(key)
                 .compact();
     }
@@ -67,5 +69,15 @@ public class JwtProvider {
     public Boolean validateToken(String token, UserDetails userDetails) {
         String username = getUsernameFromToken(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    public String generateToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(Date.from(Instant.now().plusMillis(15*60*60*1000)))
+                .signWith(key)
+                .compact();
     }
 }

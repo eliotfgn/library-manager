@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class TagDto implements Serializable {
-    private String label;
+public class ReservationRequest {
+    private String username;
+    private Long bookId;
+    private Date startOn;
+    private Date endOn;
 }

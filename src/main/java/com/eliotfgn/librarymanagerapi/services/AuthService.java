@@ -3,7 +3,6 @@ package com.eliotfgn.librarymanagerapi.services;
 import com.eliotfgn.librarymanagerapi.dto.AuthenticationResponse;
 import com.eliotfgn.librarymanagerapi.dto.LoginRequest;
 import com.eliotfgn.librarymanagerapi.dto.RegisterRequest;
-import com.eliotfgn.librarymanagerapi.models.Role;
 import com.eliotfgn.librarymanagerapi.models.User;
 import com.eliotfgn.librarymanagerapi.repositories.RoleRepository;
 import com.eliotfgn.librarymanagerapi.repositories.UserRepository;
@@ -11,8 +10,8 @@ import com.eliotfgn.librarymanagerapi.security.JwtProvider;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,14 +50,18 @@ public class AuthService {
     }
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(), loginRequest.getPassword());
-        authenticationManager.authenticate(authenticationToken);
+        authenticationManager.authenticate(authentication);
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-        String token = jwtProvider.generateToken(userDetails);
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        String token = jwtProvider.generateToken(loginRequest.getUsername());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         return new AuthenticationResponse(token);
+    }
+
+    public List<User> getAll() {
+        return userRepository.findAll();
     }
 
 }

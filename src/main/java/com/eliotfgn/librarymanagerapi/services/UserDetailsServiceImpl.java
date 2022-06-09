@@ -1,5 +1,6 @@
 package com.eliotfgn.librarymanagerapi.services;
 
+import com.eliotfgn.librarymanagerapi.models.Role;
 import com.eliotfgn.librarymanagerapi.models.User;
 import com.eliotfgn.librarymanagerapi.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User "+username+" not found."));
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach((role) -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        //user.getRoles().forEach((role) -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        for (Role role : user.getRoles()) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), user.getEnabled(), true, true, true, authorities);

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -18,4 +19,7 @@ public class Reservation {
     private User user;
     @ManyToOne
     private Book book;
+    private Date startDate;
+    private Date endDate;
+    private ReservationStatus status;
 }
