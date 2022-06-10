@@ -1,21 +1,21 @@
 package com.eliotfgn.librarymanagerapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.eliotfgn.librarymanagerapi.models.ReservationStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReservationRequest implements Serializable {
+@Builder
+public class ReservationDto {
     private String username;
-    private Long bookId;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    private String bookTitle;
     private Date startOn;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endOn;
+    private ReservationStatus status;
 }
