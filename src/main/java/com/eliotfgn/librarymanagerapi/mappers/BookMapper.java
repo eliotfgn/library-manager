@@ -18,6 +18,8 @@ public class BookMapper {
                 .year(book.getYear())
                 .nbStock(book.getNbStock())
                 .nbFree(book.getNbFree())
+                .description(book.getDescription())
+                .id(book.getId())
                 .build();
         List<String> tags = new ArrayList<>();
         book.getTags().forEach((tag) -> tags.add(tag.getLabel()));

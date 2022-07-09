@@ -13,11 +13,13 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class BookDto implements Serializable {
+    private long id;
     private String title;
     private String author;
     private String collection;
     private int year;
     private int nbStock;
     private int nbFree;
+    private String description;
     private List<String> tags;
 }

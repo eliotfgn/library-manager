@@ -38,6 +38,7 @@ public class BookService {
                 .nbStock(bookDto.getNbStock())
                 .nbFree(bookDto.getNbStock())
                 .reservations(reservations)
+                .description(bookDto.getDescription())
                 .tags(tags)
                 .build();
         bookRepository.save(book);
@@ -66,5 +67,22 @@ public class BookService {
     public BookDto getBook(Long id) {
         return bookMapper.mapToDto(bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found")));
+    }
+
+    public List<BookDto> getByTag(String tagLabel) {
+        Tag tag = tagRepository.findByLabel(tagLabel)
+                .orElseThrow(() -> new RuntimeException("No such tag stored."));
+
+        return bookRepository.findAllByTagsContains(tag)
+                .stream()
+                .map(bookMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getAllTags() {
+        return tagRepository.findAll()
+                .stream()
+                .map(Tag::getLabel)
+                .collect(Collectors.toList());
     }
 }

@@ -28,7 +28,12 @@ public class BookController {
         return ResponseEntity.ok().body(bookService.addTag(tagRequest));
     }
 
-    @GetMapping
+    @GetMapping("/tags")
+    public ResponseEntity<List<String>> getAllTags() {
+        return ResponseEntity.ok().body(bookService.getAllTags());
+    }
+
+    @GetMapping("/all")
     public ResponseEntity<List<BookDto>> catalog() {
         return ResponseEntity.ok().body(bookService.getAllBooks());
     }
@@ -36,5 +41,10 @@ public class BookController {
     @GetMapping("/{bookId}")
     public ResponseEntity<BookDto> getBook(@PathVariable Long bookId) {
         return ResponseEntity.ok().body(bookService.getBook(bookId));
+    }
+
+    @GetMapping("/by-tag/{tag}")
+    public ResponseEntity<List<BookDto>> getBooksByTag(@PathVariable String tag) {
+        return ResponseEntity.ok().body(bookService.getByTag(tag));
     }
 }

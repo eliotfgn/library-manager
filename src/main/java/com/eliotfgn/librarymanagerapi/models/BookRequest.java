@@ -5,27 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-@Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-public class Book {
+@Data
+public class BookRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String author;
-    private String collection;
-    private int year;
-    private int nbStock;
-    private int nbFree;
-    private String description;
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Tag> tags;
-    @OneToMany
-    private List<Reservation> reservations;
 }
