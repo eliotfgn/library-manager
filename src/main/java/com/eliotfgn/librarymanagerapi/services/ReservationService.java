@@ -37,9 +37,7 @@ public class ReservationService {
     public Reservation reserve(ReservationRequest reservationRequest) {
         Book book = bookRepository.findById(reservationRequest.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
-        String username = ((org.springframework.security.core.userdetails.User) SecurityContextHolder
-                .getContext().getAuthentication()
-                .getPrincipal()).getUsername();
+        String username = reservationRequest.getUsername();
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Reservation reservation;
