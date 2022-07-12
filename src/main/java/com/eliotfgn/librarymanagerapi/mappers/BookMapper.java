@@ -26,4 +26,19 @@ public class BookMapper {
         dto.setTags(tags);
         return dto;
     }
+
+    public Book mapToBook(BookDto dto) {
+        Book book = Book
+                .builder()
+                .author(dto.getAuthor())
+                .title(dto.getTitle())
+                .year(dto.getYear())
+                .collection(dto.getCollection())
+                .nbFree(dto.getNbStock())
+                .nbStock(dto.getNbStock())
+                .description(dto.getDescription())
+                .build();
+
+        return book;
+    }
 }

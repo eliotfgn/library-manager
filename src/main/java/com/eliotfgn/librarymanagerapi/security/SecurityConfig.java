@@ -45,17 +45,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+                .cors().disable()
+                .csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(STATELESS)
                     .and()
                 .authorizeRequests()
-                //.antMatchers("/api/auth/**")
-                //.permitAll()
-                //.antMatchers("/api/admin/**", "/api/books/add/**")
-                //.hasRole("ADMIN")
+                .antMatchers("/api/auth/**")
+                .permitAll()
+                .antMatchers("/api/admin/**", "/api/books/add/**")
+                .hasRole("ADMIN")
                 .anyRequest()
-                .permitAll();
-        //http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .authenticated();
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

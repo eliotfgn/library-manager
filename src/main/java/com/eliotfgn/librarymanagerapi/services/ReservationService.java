@@ -30,16 +30,14 @@ import static com.eliotfgn.librarymanagerapi.models.ReservationStatus.ONGOING;
 @Transactional
 public class ReservationService {
     private final ReservationRepository reservationRepository;
-    private final BookRepository bookRepository;
-    private final UserRepository userRepository;
+    private final BookService bookService;
+    private final UserService userService;
     private final ReservationMapper reservationMapper;
 
     public Reservation reserve(ReservationRequest reservationRequest) {
-        Book book = bookRepository.findById(reservationRequest.getBookId())
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+        Book book = bookService.getBookEntity(reservationRequest.getBookId());
         String username = reservationRequest.getUsername();
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.getByUsername(username);
         Reservation reservation;
         Date reservationCreatedDate;
 
@@ -116,8 +114,7 @@ public class ReservationService {
     }
 
     public List<ReservationDto> allForUser(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.getByUsername(username);
 
         return reservationRepository.findAllByUser(user)
                 .stream()

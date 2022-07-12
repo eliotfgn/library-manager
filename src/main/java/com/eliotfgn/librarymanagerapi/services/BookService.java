@@ -69,6 +69,11 @@ public class BookService {
                 .orElseThrow(() -> new RuntimeException("Book not found")));
     }
 
+    public Book getBookEntity(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+    }
+
     public List<BookDto> getByTag(String tagLabel) {
         Tag tag = tagRepository.findByLabel(tagLabel)
                 .orElseThrow(() -> new RuntimeException("No such tag stored."));
