@@ -23,8 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    //@Autowired
+    //private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -52,12 +52,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(STATELESS)
                     .and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**")
-                .permitAll()
-                .antMatchers("/api/admin/**", "/api/books/add/**")
-                .hasRole("ADMIN")
+//                .antMatchers("/api/auth/**")
+//                .permitAll()
+//                .antMatchers("/api/admin/**", "/api/books/add/**")
+//                .hasRole("ADMIN")
                 .anyRequest()
-                .authenticated();
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .permitAll();
+        //http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

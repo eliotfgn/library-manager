@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,15 +40,16 @@ public class ReservationService {
         String username = reservationRequest.getUsername();
         User user = userService.getByUsername(username);
         Reservation reservation;
-        Date reservationCreatedDate;
+        LocalDate reservationCreatedDate;
 
         if (user.getCanReserve()) {
-            if (reservationRequest.getStartOn().before(new Date()) ||
-                    reservationRequest.getEndOn().before(new Date())) {
+            if (reservationRequest.getStartOn().isBefore(LocalDate.now()) ||
+                    reservationRequest.getEndOn().isBefore(LocalDate.now())) {
                 log.error("Start: "+ reservationRequest.getStartOn());
+                log.error("Now: " + LocalDate.now());
                 throw new BadReservationPeriodException("Your reservation should start before and " +
                         "end after the current date.");
-            } else if (reservationRequest.getStartOn().after(reservationRequest.getEndOn())) {
+            } else if (reservationRequest.getStartOn().isAfter(reservationRequest.getEndOn())) {
                 throw new BadReservationPeriodException("Your end date should be after the start date");
             }
             else {
@@ -60,13 +62,13 @@ public class ReservationService {
                         if (book.getNbFree() - overlaps > 0) {
                             //the user can reserve for a period and his reservation wouldn't affect on past not started reservations
                             reservation = newReservation(reservationRequest, user, book);
-                            reservationCreatedDate = new Date();
+                            reservationCreatedDate = LocalDate.now();
                         } else {
                             throw new BadReservationPeriodException("There are no free items during the period of your reservation.");
                         }
                     } else {
                         reservation = newReservation(reservationRequest, user, book);
-                        reservationCreatedDate = new Date();
+                        reservationCreatedDate = LocalDate.now();
                     }
                 } else {
                     log.info("Free items: "+ book.getNbFree());
@@ -75,7 +77,7 @@ public class ReservationService {
 
             }
             //set the reservation status
-            if (reservation.getStartDate().after(reservationCreatedDate))
+            if (reservation.getStartDate().isAfter(reservationCreatedDate))
                 reservation.setStatus(NOT_STARTED);
             else
                 reservation.setStatus(ONGOING);
@@ -106,10 +108,10 @@ public class ReservationService {
                                         List<Reservation> notStartedReservations) {
 
         return notStartedReservations.stream()
-                .filter((reservation) -> !((request.getStartOn().before(reservation.getStartDate())
-                        && request.getEndOn().before(reservation.getStartDate()))
-                        || (request.getStartOn().after(reservation.getEndDate())
-                        && request.getEndOn().after(reservation.getEndDate()))))
+                .filter((reservation) -> !((request.getStartOn().isBefore(reservation.getStartDate())
+                        && request.getEndOn().isBefore(reservation.getStartDate()))
+                        || (request.getStartOn().isAfter(reservation.getEndDate())
+                        && request.getEndOn().isAfter(reservation.getEndDate()))))
                 .count();
     }
 

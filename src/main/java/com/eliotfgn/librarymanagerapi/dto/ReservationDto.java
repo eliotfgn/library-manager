@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.Date;
 public class ReservationDto {
     private String username;
     private String bookTitle;
-    private Date startOn;
-    private Date endOn;
+    private LocalDate startOn;
+    private LocalDate endOn;
     private ReservationStatus status;
 }

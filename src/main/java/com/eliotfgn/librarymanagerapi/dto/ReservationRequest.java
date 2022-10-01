@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,7 @@ public class ReservationRequest implements Serializable {
     private String username;
     private Long bookId;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startOn;
+    private LocalDate startOn;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date endOn;
+    private LocalDate endOn;
 }
