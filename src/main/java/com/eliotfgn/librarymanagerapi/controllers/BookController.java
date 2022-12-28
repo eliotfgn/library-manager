@@ -17,7 +17,7 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
 
-    //test
+    //
     @PostMapping("/add")
     public ResponseEntity<String> add(@RequestBody BookDto bookDto) {
         bookService.addBook(bookDto);
