@@ -47,4 +47,10 @@ public class BookController {
     public ResponseEntity<List<BookDto>> getBooksByTag(@PathVariable String tag) {
         return ResponseEntity.ok().body(bookService.getByTag(tag));
     }
+
+    @DeleteMapping("/delete/{bookId}")
+    public ResponseEntity<String> deleteBook(@PathVariable Long bookId) {
+        bookService.deleteBook(bookId);
+        return ResponseEntity.ok().body("Book deleted!");
+    }
 }

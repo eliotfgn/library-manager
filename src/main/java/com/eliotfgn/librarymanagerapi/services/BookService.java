@@ -90,4 +90,8 @@ public class BookService {
                 .map(Tag::getLabel)
                 .collect(Collectors.toList());
     }
+
+    public void deleteBook(Long bookId) {
+        bookRepository.deleteById(bookId);
+    }
 }
